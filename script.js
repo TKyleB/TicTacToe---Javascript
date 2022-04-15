@@ -16,6 +16,7 @@ const game = () => {
     let currentTurn = playerOne;
     let turnCount = 1;
     let gameOver = false;
+    let tieGame = false;
     const board = boardFactory();
 
     const resetButton = document.getElementById("reset");
@@ -42,7 +43,6 @@ const game = () => {
             }
 
 
-            console.log(currentTurn.symbol);
 
         }
 
@@ -54,7 +54,6 @@ const game = () => {
         for (let i = 0; i < cells.length; i++) {
             board[i] = cells[i].textContent;
         }
-        console.log(board);
     };
 
     //Check Win
@@ -76,7 +75,10 @@ const game = () => {
         else if (leftColumn == "XXX" || leftColumn == "OOO") return true;
         else if (middleColumn == "XXX" || middleColumn == "OOO") return true;
         else if (rightColumn == "XXX" || rightColumn == "OOO") return true;
-        else if (turnCount == 10) return true;
+        else if (turnCount > 9) {
+            tieGame = true;
+            return true;
+        }
         else return false;
 
 
@@ -86,7 +88,7 @@ const game = () => {
         const winnerText = document.getElementById("winner");
         const winnerHeader = document.querySelector("h3");
         winnerHeader.style.display = "block";
-        if (turnCount == 10) winnerText.textContent = "Its a tie!";
+        if (tieGame) winnerText.textContent = "Its a tie!";
         else winnerText.textContent = `Player ${currentTurn.symbol} Wins!`;
 
 
@@ -105,11 +107,12 @@ const game = () => {
         winnerHeader.style.display = "none";
         gameOver = false;
         turnCount = 1;
+        tieGame = false;
         currentTurn = playerOne;
 
     }
 
-    //Game Loop
+
     addClickEvents();
 
 

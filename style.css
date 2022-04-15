@@ -1,0 +1,44 @@
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.cell {
+    border: 1px solid black;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 75px;
+}
+
+h1 {
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+    display: none;
+    padding: 0px;
+    margin: 0px;
+
+}
+
+.button-holder {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.board-holder {
+    margin-top: 50px;
+
+
+}
+
+.winnerholder {
+    height: 10px;
+}

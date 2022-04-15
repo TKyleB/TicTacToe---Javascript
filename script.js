@@ -10,6 +10,7 @@ const boardFactory = () => {
 }
 
 
+
 const game = () => {
     const playerOne = playerFactory("X");
     const playerTwo = playerFactory("O");
@@ -17,7 +18,18 @@ const game = () => {
     let turnCount = 1;
     let gameOver = false;
     let tieGame = false;
+    let aiOn = false;
     const board = boardFactory();
+
+    const aitogglebutton = document.getElementById("toggleai");
+    const aiStatus = document.querySelector("p");
+    aitogglebutton.addEventListener("click", () => {
+        aiOn = !aiOn;
+        if (aiOn) aiStatus.style.display = "block";
+        else aiStatus.style.display = "none";
+        resetGame();
+    });
+
 
     const resetButton = document.getElementById("reset");
     resetButton.addEventListener("click", resetGame);
@@ -38,7 +50,10 @@ const game = () => {
                 updateWinText();
             }
             else {
-                if (currentTurn == playerOne) currentTurn = playerTwo;
+                if (currentTurn == playerOne) {
+                    currentTurn = playerTwo;
+                    if (aiOn) computerTurn();
+                }
                 else currentTurn = playerOne;
             }
 
@@ -47,6 +62,30 @@ const game = () => {
         }
 
     };
+
+    function computerTurn() {
+        let randomInt;
+        while (currentTurn == playerTwo) {
+            randomInt = Math.floor(Math.random() * 8) + 1;
+            if (board[randomInt] == "") {
+                board[randomInt] = "O";
+                const cells = document.querySelectorAll("div.cell");
+                cells[randomInt].removeEventListener("click", gameLoop, { once: true })
+                for (let i = 0; i < cells.length; i++) {
+                    cells[i].textContent = board[i];
+                }
+                if (checkWin()) {
+                    gameOver = true;
+                    updateWinText();
+                }
+
+                currentTurn = playerOne;
+                turnCount++;
+            }
+
+        }
+
+    }
 
     //Update Array
     function updateArray() {
@@ -114,6 +153,8 @@ const game = () => {
 
 
     addClickEvents();
+
+
 
 
     return { updateArray, board, checkWin, gameOver, resetGame }
